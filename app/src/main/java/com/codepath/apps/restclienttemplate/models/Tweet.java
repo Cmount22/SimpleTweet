@@ -5,19 +5,22 @@ import com.codepath.apps.restclienttemplate.TimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Parcel
 public class Tweet {
 
     public String body;
     public String createdAt;
     public long id;
     public User user;
+    public Tweet(){}
 
 
-    public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
+
+        public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.body = jsonObject.getString( "text");
         tweet.createdAt = jsonObject.getString( "created_at");

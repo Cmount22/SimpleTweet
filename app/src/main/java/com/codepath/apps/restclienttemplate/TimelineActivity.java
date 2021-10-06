@@ -19,6 +19,7 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,7 @@ public class TimelineActivity extends AppCompatActivity {
             // Compose icon has been selected
             // Navigate to the compose activity
             Intent intent = new Intent( this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivityForResult(intent,REQUEST_CODE);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -109,10 +110,23 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // Get data from the intent (tweet)
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra(" tweet"));
+            // Update the RV with the tweet
+            // Modify data source
+            tweets.add( 0, tweet);
+            //Update the adapter
+            adapter.notifyItemInserted(0);
+            rvTweets.smoothScrollToPosition(0);
 
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
     private void loadMoreData() {
+
         // 1. Send an API request to retrieve appropriate paginated data
         client.getNextPageOfTweets(new JsonHttpResponseHandler() {
             @Override
